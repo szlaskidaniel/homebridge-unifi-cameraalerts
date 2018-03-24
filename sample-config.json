@@ -1,0 +1,11 @@
+{
+    "accessories": [
+        {
+            "accessory": "UnifiAlerts",
+            "name": "UnifiAlerts",
+            "unifiUserName": "",
+            "unifiPassword": "" ,
+            "unifiNvr": "https://192.168.99.4:7443/api/2.0"           
+        }
+    ]
+}
