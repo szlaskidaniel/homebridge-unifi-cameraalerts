@@ -1,4 +1,6 @@
 var request = require('request');
+var rp = require('request-promise');
+
 var cookie = require('cookie');
 
 var unifi_username;
@@ -11,15 +13,18 @@ var unifi_APIKEY;
 var unifi_USERID;
 var unifi_NvrUrl;
 
+var self;
 
 
-function init(aUser, aPassword, aNvr) {
+function init(aUser, aPassword, aNvr, obj) {
 
     unifi_username = aUser;
     unifi_password = aPassword;
     unifi_NvrUrl = aNvr;
     
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+    self = obj;
 
 }
 
@@ -40,8 +45,11 @@ function login() {
             headers: {
                 'Content-Type': 'application/json'
             },
+            timeout: 5000,
             json: post_data
         };
+
+        
         request(options, function (err, res, body) {
             if (!err && res.statusCode == 200) {
                 //console.log('Logged In');
@@ -66,79 +74,6 @@ function login() {
 }
 
 
-/*
-function refreshState() {
-
-    return new Promise(function (resolve, reject) {
-
-        var post_data = {};
-
-        var options = {
-            url: 'https://www.riscocloud.com/ELAS/WebUI/Security/GetCPState',
-            method: 'POST',
-            headers: {
-                "Referer": "https://www.riscocloud.com/ELAS/WebUI/MainPage/MainPage",
-                "Origin": "https://www.riscocloud.com",
-                "Cookie": riscoCookies
-            },
-            json: post_data
-        };
-
-        request(options, function (err, res, body) {
-            if (!err) {
-                // Check error inside JSON
-                try {
-                    if (body.error == 3) {
-                        // Error. Try to login first
-                        console.log('Error: 3. Try to login first.');
-                        reject();
-                        return
-                    }
-                } catch (error) {
-
-                }
-
-                // Check if overview is present
-
-                if (body.overview == undefined) {
-                    // No changes. Empty response
-                    resolve();
-                    return
-                }
-
-                //console.log('No error, status: ', res.statusCode);
-                //console.log('RiscoCloud ArmedState:', body.overview.partInfo.armedStr);
-                //console.log('RiscoCloud OngoingAlarm: ', body.OngoingAlarm);
-
-                var riscoState;
-                // 0 -  Characteristic.SecuritySystemTargetState.STAY_ARM:
-                // 1 -  Characteristic.SecuritySystemTargetState.AWAY_ARM:
-                // 2-   Characteristic.SecuritySystemTargetState.NIGHT_ARM:
-                // 3 -  Characteristic.SecuritySystemTargetState.DISARM:
-                //console.log(body);
-
-                if (body.OngoingAlarm == true) {
-                    riscoState = 4;
-                } else {
-                    try {
-                        var armedZones = body.overview.partInfo.armedStr.split(' ');
-                        if (parseInt(armedZones[0]) > 0) {
-                            riscoState = 1 // Armed
-                        } else
-                            riscoState = 3 // Disarmed
-                    } catch (error) {
-                        resolve();
-                    }
-                }
-
-                resolve(riscoState);
-            } else
-                reject();
-        })
-    })
-}
-*/
-
 
 function setAlerts(aState, aUrl) {
 
@@ -159,6 +94,7 @@ function setAlerts(aState, aUrl) {
                 'Content-Type': 'application/json',
                 "Cookie": unifi_Cookies
             },
+            timeout: 5000,
             json: post_data
         };
         //console.log('Unifi request: ' + unifi_NvrUrl + '/user/' + unifi_USERID);

@@ -18,7 +18,7 @@ function UnifiCameraAlertsAccessory(log, config) {
 
     var self = this;
     
-    unifi.init(this.unifiUserName, this.unifiPassword, this.unifiNvr);
+    unifi.init(this.unifiUserName, this.unifiPassword, this.unifiNvr, self);
 
 }
 
@@ -70,7 +70,6 @@ UnifiCameraAlertsAccessory.prototype = {
             callback(null, resp);
 
         }).catch(function (error) {
-            self.log(error);
             callback("error");
         });
     },

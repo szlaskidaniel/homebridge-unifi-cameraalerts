@@ -1,6 +1,6 @@
 {
   "name": "homebridge-unifi-cameraalerts",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Unifi Camera alerts switch for Homebridge",
   "dependencies": {
     "request": "^2.85.0"
