@@ -103,9 +103,9 @@ function setAlerts(aState, aUrl) {
                 //console.log('Success');
                 resolve();
             } else {
-                var errMsg = 'Error ' + res.statusCode;
+                var errMsg = 'Error ';
                 //console.log(errMsg);
-                //console.log(res);
+                self.log(err);
                 //console.log(res.statusCode);
                 //console.log(res.statusMessage)
                 reject(errMsg);
