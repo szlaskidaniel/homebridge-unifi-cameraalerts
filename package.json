@@ -3,6 +3,8 @@
   "version": "1.0.9",
   "description": "Unifi Camera alerts switch for Homebridge",
   "dependencies": {
+    "cookie": "^0.3.1",
+    "promise-defer": "^1.0.0",
     "request": "^2.85.0"
   },
   "engines": {
